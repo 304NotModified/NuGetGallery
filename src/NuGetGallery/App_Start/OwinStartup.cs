@@ -64,16 +64,10 @@ namespace NuGetGallery
 
             // Configure machine key for session persistence across slots
             SessionPersistence.Setup(config);
+
             // Refresh the content for the ContentObjectService to guarantee it has loaded the latest configuration on startup.
             var contentObjectService = dependencyResolver.GetService<IContentObjectService>();
-            HostingEnvironment.QueueBackgroundWorkItem(async token =>
-            {
-                while (!token.IsCancellationRequested)
-                {
-                    await contentObjectService.Refresh();
-                    await Task.Delay(ContentObjectService.RefreshInterval, token);
-                }
-            });
+            StartContentObjectService(contentObjectService);
 
             // Setup telemetry
             var instrumentationKey = config.Current.AppInsightsInstrumentationKey;
@@ -212,6 +206,27 @@ namespace NuGetGallery
             };
 
             HasRun = true;
+        }
+
+        private static void StartContentObjectService(IContentObjectService contentObjectService)
+        {
+            // Try to load the content objects once at startup.
+            try
+            {
+                contentObjectService.Refresh().Wait();
+            }
+            catch (Exception)
+            {
+            }
+
+            HostingEnvironment.QueueBackgroundWorkItem(async token =>
+            {
+                while (!token.IsCancellationRequested)
+                {
+                    await contentObjectService.Refresh();
+                    await Task.Delay(ContentObjectService.RefreshInterval, token);
+                }
+            });
         }
 
         private static void StartFeatureFlags(IFeatureFlagCacheService featureFlags)
