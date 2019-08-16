@@ -5,10 +5,10 @@ namespace NuGetGallery.Infrastructure.Search
 {
     public static class SearchClientConfiguration
     {
-        public static string SearchPrimaryInstance = "SearchPrimary";
-        public static string SearchSecondaryInstance = "SearchSecondary";
+        public static string SearchAPrimaryInstance = "SearchAPrimary";
+        public static string SearchASecondaryInstance = "SearchASecondary";
 
-        public static string PreviewSearchPrimaryInstance = "PreviewSearchPrimary";
-        public static string PreviewSearchSecondaryInstance = "PreviewSearchSecondary";
+        public static string SearchBPrimaryInstance = "SearchBPrimary";
+        public static string SearchBSecondaryInstance = "SearchBSecondary";
     }
 }

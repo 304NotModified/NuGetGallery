@@ -1,10 +1,9 @@
-﻿using NuGetGallery.Configuration;
+﻿// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
+using NuGetGallery.Configuration;
 
 namespace NuGetGallery.AccountDeleter
 {
@@ -91,10 +90,10 @@ namespace NuGetGallery.AccountDeleter
         public bool RejectPackagesWithLicense { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool BlockLegacyLicenseUrl { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool AllowLicenselessPackages { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Uri SearchServiceUriPrimary { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Uri SearchServiceUriSecondary { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Uri PreviewSearchServiceUriPrimary { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Uri PreviewSearchServiceUriSecondary { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Uri SearchServiceAUriPrimary { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Uri SearchServiceAUriSecondary { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Uri SearchServiceBUriPrimary { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Uri SearchServiceBUriSecondary { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int SearchCircuitBreakerDelayInSeconds { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int SearchCircuitBreakerWaitAndRetryIntervalInMilliseconds { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int SearchCircuitBreakerWaitAndRetryCount { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

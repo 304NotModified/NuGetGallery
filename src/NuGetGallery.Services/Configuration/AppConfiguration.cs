@@ -363,13 +363,13 @@ namespace NuGetGallery.Configuration
         [DefaultValue(true)]
         public bool AllowLicenselessPackages { get; set; }
 
-        public Uri SearchServiceUriPrimary { get; set; }
+        public Uri SearchServiceAUriPrimary { get; set; }
 
-        public Uri SearchServiceUriSecondary { get; set; }
+        public Uri SearchServiceAUriSecondary { get; set; }
 
-        public Uri PreviewSearchServiceUriPrimary { get; set; }
+        public Uri SearchServiceBUriPrimary { get; set; }
 
-        public Uri PreviewSearchServiceUriSecondary { get; set; }
+        public Uri SearchServiceBUriSecondary { get; set; }
 
         [DefaultValue(600)]
         public int SearchCircuitBreakerDelayInSeconds { get; set; }

@@ -788,33 +788,33 @@ namespace NuGetGallery
                 .InstancePerLifetimeScope();
         }
 
-        private static List<(string name, Uri searchUri)> GetSearchClientsFromConfiguration(IGalleryConfigurationService configuration)
+        private static List<(string name, Uri searchUri)> GetSearchClientsAFromConfiguration(IGalleryConfigurationService configuration)
         {
             var searchClients = new List<(string name, Uri searchUri)>();
 
-            if (configuration.Current.SearchServiceUriPrimary != null)
+            if (configuration.Current.SearchServiceAUriPrimary != null)
             {
-                searchClients.Add((SearchClientConfiguration.SearchPrimaryInstance, configuration.Current.SearchServiceUriPrimary));
+                searchClients.Add((SearchClientConfiguration.SearchAPrimaryInstance, configuration.Current.SearchServiceAUriPrimary));
             }
-            if (configuration.Current.SearchServiceUriSecondary != null)
+            if (configuration.Current.SearchServiceAUriSecondary != null)
             {
-                searchClients.Add((SearchClientConfiguration.SearchSecondaryInstance, configuration.Current.SearchServiceUriSecondary));
+                searchClients.Add((SearchClientConfiguration.SearchASecondaryInstance, configuration.Current.SearchServiceAUriSecondary));
             }
 
             return searchClients;
         }
 
-        private static List<(string name, Uri searchUri)> GetPreviewSearchClientsFromConfiguration(IGalleryConfigurationService configuration)
+        private static List<(string name, Uri searchUri)> GetSearchClientsBFromConfiguration(IGalleryConfigurationService configuration)
         {
             var searchClients = new List<(string name, Uri searchUri)>();
 
-            if (configuration.Current.PreviewSearchServiceUriPrimary != null)
+            if (configuration.Current.SearchServiceBUriPrimary != null)
             {
-                searchClients.Add((SearchClientConfiguration.PreviewSearchPrimaryInstance, configuration.Current.PreviewSearchServiceUriPrimary));
+                searchClients.Add((SearchClientConfiguration.SearchBPrimaryInstance, configuration.Current.SearchServiceBUriPrimary));
             }
-            if (configuration.Current.PreviewSearchServiceUriSecondary != null)
+            if (configuration.Current.SearchServiceBUriSecondary != null)
             {
-                searchClients.Add((SearchClientConfiguration.PreviewSearchSecondaryInstance, configuration.Current.PreviewSearchServiceUriSecondary));
+                searchClients.Add((SearchClientConfiguration.SearchBSecondaryInstance, configuration.Current.SearchServiceBUriSecondary));
             }
 
             return searchClients;
@@ -827,7 +827,7 @@ namespace NuGetGallery
             ServiceCollection services,
             ContainerBuilder builder)
         {
-            var searchClients = GetSearchClientsFromConfiguration(configuration);
+            var searchClients = GetSearchClientsAFromConfiguration(configuration);
 
             if (searchClients.Count >= 1)
             {
@@ -844,7 +844,7 @@ namespace NuGetGallery
                     searchClients);
 
                 // Register the preview search service and its dependencies with a binding key.
-                var previewSearchClients = GetPreviewSearchClientsFromConfiguration(configuration);
+                var previewSearchClients = GetSearchClientsBFromConfiguration(configuration);
                 RegisterSearchService(
                     loggerFactory,
                     configuration,
@@ -1009,7 +1009,7 @@ namespace NuGetGallery
 
         private static void ConfigureAutocomplete(ContainerBuilder builder, IGalleryConfigurationService configuration)
         {
-            if (configuration.Current.SearchServiceUriPrimary != null || configuration.Current.SearchServiceUriSecondary != null)
+            if (configuration.Current.SearchServiceAUriPrimary != null || configuration.Current.SearchServiceAUriSecondary != null)
             {
                 builder.RegisterType<AutocompleteServicePackageIdsQuery>()
                     .AsSelf()
