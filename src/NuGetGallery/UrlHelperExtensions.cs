@@ -23,7 +23,8 @@ namespace NuGetGallery
 
         public static class Fragments
         {
-            public const string ManagePackageOwnership = "#show-Owners-container";
+            public const string ShowOwnersContainer = "#show-Owners-container";
+            public const string ShowRequestsReceivedContainer = "#show-requests-received-container";
         }
 
         // Shorthand for current url
@@ -744,7 +745,7 @@ namespace NuGetGallery
                 {
                     { "action", nameof(PackagesController.Manage) },
                     { "id", id }
-                }) + Fragments.ManagePackageOwnership;
+                }) + Fragments.ShowOwnersContainer;
         }
 
         public static RouteUrlTemplate<OwnerRequestsListItemViewModel> ManagePackageOwnershipTemplate(
@@ -760,7 +761,7 @@ namespace NuGetGallery
                 nameof(PackagesController.Manage),
                 "Packages",
                 relativeUrl,
-                routeValues: rv) + Fragments.ManagePackageOwnership;
+                routeValues: rv) + Fragments.ShowOwnersContainer;
 
             return new RouteUrlTemplate<OwnerRequestsListItemViewModel>(linkGenerator, routesGenerator);
         }
@@ -1044,6 +1045,11 @@ namespace NuGetGallery
             return GetActionLink(url, "Packages", "Users", relativeUrl);
         }
 
+        public static string ManageMyReceivedPackageOwnershipRequests(this UrlHelper url, bool relativeUrl = true)
+        {
+            return url.ManageMyPackages(relativeUrl) + Fragments.ShowRequestsReceivedContainer;
+        }
+
         public static string GetPackageOwners(this UrlHelper url, bool relativeUrl = true)
         {
             return GetActionLink(url, "GetPackageOwners", "JsonApi", relativeUrl);
@@ -1104,9 +1110,13 @@ namespace NuGetGallery
         }
 
         public static RouteUrlTemplate<OwnerRequestsListItemViewModel> ConfirmPendingOwnershipRequestTemplate(
-            this UrlHelper url, bool relativeUrl = true)
+            this UrlHelper url,
+            bool relativeUrl = true)
         {
-            return HandlePendingOwnershipRequestTemplate(url, RouteName.ConfirmPendingOwnershipRequest, relativeUrl);
+            return HandlePendingOwnershipRequestTemplate(
+                url,
+                nameof(PackagesController.ConfirmPendingOwnershipRequest),
+                relativeUrl);
         }
 
         public static string ConfirmPendingOwnershipRequest(
@@ -1116,13 +1126,23 @@ namespace NuGetGallery
             string confirmationCode,
             bool relativeUrl = true)
         {
-            return HandlePendingOwnershipRequest(url, RouteName.ConfirmPendingOwnershipRequest, packageId, username, confirmationCode, relativeUrl);
+            return HandlePendingOwnershipRequest(
+                url,
+                nameof(PackagesController.ConfirmPendingOwnershipRequestRedirect),
+                packageId,
+                username,
+                confirmationCode,
+                relativeUrl);
         }
 
         public static RouteUrlTemplate<OwnerRequestsListItemViewModel> RejectPendingOwnershipRequestTemplate(
-            this UrlHelper url, bool relativeUrl = true)
+            this UrlHelper url,
+            bool relativeUrl = true)
         {
-            return HandlePendingOwnershipRequestTemplate(url, RouteName.RejectPendingOwnershipRequest, relativeUrl);
+            return HandlePendingOwnershipRequestTemplate(
+                url,
+                nameof(PackagesController.RejectPendingOwnershipRequest),
+                relativeUrl);
         }
 
         public static string RejectPendingOwnershipRequest(
@@ -1132,12 +1152,18 @@ namespace NuGetGallery
             string confirmationCode,
             bool relativeUrl = true)
         {
-            return HandlePendingOwnershipRequest(url, RouteName.RejectPendingOwnershipRequest, packageId, username, confirmationCode, relativeUrl);
+            return HandlePendingOwnershipRequest(
+                url,
+                nameof(PackagesController.RejectPendingOwnershipRequestRedirect),
+                packageId,
+                username,
+                confirmationCode,
+                relativeUrl);
         }
 
         private static RouteUrlTemplate<OwnerRequestsListItemViewModel> HandlePendingOwnershipRequestTemplate(
             this UrlHelper url,
-            string routeName,
+            string actionName,
             bool relativeUrl = true)
         {
             var routesGenerator = new Dictionary<string, Func<OwnerRequestsListItemViewModel, object>>
@@ -1149,7 +1175,7 @@ namespace NuGetGallery
 
             Func<RouteValueDictionary, string> linkGenerator = rv => GetActionLink(
                 url,
-                routeName,
+                actionName,
                 "Packages",
                 relativeUrl,
                 routeValues: rv);
@@ -1159,7 +1185,7 @@ namespace NuGetGallery
 
         private static string HandlePendingOwnershipRequest(
             this UrlHelper url,
-            string routeName,
+            string actionName,
             string packageId,
             string username,
             string confirmationCode,
@@ -1172,7 +1198,7 @@ namespace NuGetGallery
                 ["token"] = confirmationCode
             };
 
-            return GetActionLink(url, routeName, "Packages", relativeUrl, routeValues);
+            return GetActionLink(url, actionName, "Packages", relativeUrl, routeValues);
         }
 
         public static string ConfirmEmail(
